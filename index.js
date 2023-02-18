@@ -1,6 +1,8 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
+
 const app = express();
 const port = process.env.PORT || 4000;
 
@@ -12,13 +14,13 @@ app.use(express.json());
 
 
 
-const uri = "mongodb+srv://sunshine:NO5BygFoxPCaY0r6@cluster0.hesma7h.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.hesma7h.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function run() {
     try {
         const fresherJobsCollection = client.db('sunshine').collection('fresherJobs');
-        // const experiencedJobsCollection = client.db('sunshine').collection('experiencedJobs');
+        const experiencedJobsCollection = client.db('sunshine').collection('experiencedJobs');
 
         app.get('/fresherjobs', async (req, res) => {
             const query = {};
